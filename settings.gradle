@@ -1,0 +1,7 @@
+rootProject.name = 'RecipeApp'
+include 'auth-service'
+include 'userprofile-service'
+include 'recipe-service'
+include 'recipe-service'
+include 'comment-service'
+
