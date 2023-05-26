@@ -12,5 +12,7 @@ public interface IUserProfileRepository extends MongoRepository<UserProfile, Str
 
 
 
-    Optional<UserProfile> findOptionalByUserId(Long authId);
+    Optional<UserProfile> findOptionalByUserId(Long userId);
+
+
 }

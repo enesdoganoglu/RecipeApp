@@ -3,6 +3,7 @@ package com.bilgeadam.service;
 import com.bilgeadam.dto.request.ActivateRequestDto;
 import com.bilgeadam.dto.request.LoginRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.dto.request.UpdateEmailOrUsernameRequestDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.exception.ErrorType;
 import com.bilgeadam.exception.UserManagerException;
@@ -11,6 +12,7 @@ import com.bilgeadam.mapper.IUserMapper;
 import com.bilgeadam.rabbitmq.producer.RegisterProducer;
 import com.bilgeadam.repository.IUserRepository;
 import com.bilgeadam.repository.entity.User;
+import com.bilgeadam.repository.entity.enums.ERole;
 import com.bilgeadam.repository.entity.enums.EStatus;
 import com.bilgeadam.utility.JwtTokenProvider;
 import com.bilgeadam.utility.ServiceManager;
@@ -18,7 +20,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.bilgeadam.utility.CodeGenerator.generateCode;
 
@@ -83,6 +88,36 @@ public class UserService extends ServiceManager<User, Long> {
                 .orElseThrow(() -> {throw new UserManagerException(ErrorType.TOKEN_NOT_CREATED);
                 });
     }
+
+    public Boolean update(UpdateEmailOrUsernameRequestDto dto){
+        Optional<User> user = userRepository.findById(dto.getUserId());
+        if (user.isEmpty()){
+            throw new UserManagerException(ErrorType.USER_NOT_FOUND);
+        }
+
+        IUserMapper.INSTANCE.updateUsernameOrEmail(dto, user.get());
+        update(user.get());
+        return true;
+    }
+
+    public Boolean delete(String token){
+        Optional<Long> userId = jwtTokenProvider.getIdFromToken(token);
+        if (userId.isEmpty()){
+            throw new UserManagerException(ErrorType.INVALID_TOKEN);
+        }
+
+        Optional<User> user = userRepository.findById(userId.get());
+        if (user.isEmpty()){
+            throw new UserManagerException(ErrorType.USER_NOT_FOUND);
+        }
+
+        user.get().setStatus(EStatus.DELETED);
+        update(user.get());
+        userManager.delete(userId.get());
+        return true;
+    }
+
+
 
 
 }

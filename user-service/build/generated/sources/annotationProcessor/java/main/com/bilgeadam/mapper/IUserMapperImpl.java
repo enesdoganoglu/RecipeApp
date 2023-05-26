@@ -1,6 +1,7 @@
 package com.bilgeadam.mapper;
 
 import com.bilgeadam.dto.request.RegisterRequestDto;
+import com.bilgeadam.dto.request.UpdateEmailOrUsernameRequestDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.rabbitmq.model.RegisterModel;
 import com.bilgeadam.repository.entity.User;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-26T19:37:37+0300",
+    date = "2023-05-26T20:39:32+0300",
     comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-7.4.jar, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
@@ -63,5 +64,22 @@ public class IUserMapperImpl implements IUserMapper {
         registerResponseDto.activationCode( user.getActivationCode() );
 
         return registerResponseDto.build();
+    }
+
+    @Override
+    public void updateUsernameOrEmail(UpdateEmailOrUsernameRequestDto dto, User user) {
+        if ( dto == null ) {
+            return;
+        }
+
+        if ( dto.getUserId() != null ) {
+            user.setUserId( dto.getUserId() );
+        }
+        if ( dto.getUsername() != null ) {
+            user.setUsername( dto.getUsername() );
+        }
+        if ( dto.getEmail() != null ) {
+            user.setEmail( dto.getEmail() );
+        }
     }
 }

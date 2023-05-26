@@ -1,9 +1,8 @@
 package com.bilgeadam.controller;
-import static com.bilgeadam.constant.ApiUrls.*;
-import static com.bilgeadam.constant.ApiUrls.ACTIVATE_STATUS;
 
 import com.bilgeadam.dto.request.*;
 import com.bilgeadam.dto.response.RegisterResponseDto;
+import com.bilgeadam.repository.entity.User;
 import com.bilgeadam.service.UserService;
 import com.bilgeadam.utility.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+
+import static com.bilgeadam.constant.ApiUrls.*;
 
 
 @RestController
@@ -35,5 +37,19 @@ public class UserController {
     @PostMapping(LOGIN)
     public ResponseEntity<String> login(@RequestBody LoginRequestDto dto){
         return ResponseEntity.ok(userService.login(dto));
+    }
+
+    @GetMapping(FIND_ALL)
+    public ResponseEntity<List<User>> findAll(){
+        return ResponseEntity.ok(userService.findAll());
+    }
+    @DeleteMapping(DELETE_BY_ID)
+    public ResponseEntity<Boolean> delete(String token){
+        return ResponseEntity.ok(userService.delete(token));
+    }
+
+    @PutMapping("/update-username-email")
+    public ResponseEntity<Boolean> update(@RequestBody UpdateEmailOrUsernameRequestDto dto){
+        return ResponseEntity.ok(userService.update(dto));
     }
 }

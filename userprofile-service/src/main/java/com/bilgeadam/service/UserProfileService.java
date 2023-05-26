@@ -1,6 +1,8 @@
 package com.bilgeadam.service;
 
 
+import com.bilgeadam.exception.ErrorType;
+import com.bilgeadam.exception.UserProfileManagerException;
 import com.bilgeadam.mapper.IUserProfileMapper;
 import com.bilgeadam.rabbitmq.model.RegisterModel;
 import com.bilgeadam.repository.IUserProfileRepository;
@@ -40,6 +42,16 @@ public class UserProfileService extends ServiceManager<UserProfile, String> {
             throw new RuntimeException("User id bulunamadı");
         }
         userProfile.get().setStatus(EStatus.ACTIVE);
+        update(userProfile.get());
+        return true;
+    }
+
+    public Boolean delete(Long userId){
+        Optional<UserProfile> userProfile = userProfileRepository.findOptionalByUserId(userId);
+        if (userProfile.isEmpty()) {
+            throw new UserProfileManagerException(ErrorType.USER_NOT_FOUND);
+        }
+        userProfile.get().setStatus(EStatus.DELETED);
         update(userProfile.get());
         return true;
     }

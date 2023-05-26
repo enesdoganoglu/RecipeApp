@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.bilgeadam.constant.ApiUrls.*;
-import static com.bilgeadam.constant.ApiUrls.ACTIVATE_STATUS;
 
 @RestController
 @RequestMapping(USER_PROFILE)
@@ -22,6 +21,11 @@ public class UserProfileController {
     @GetMapping(ACTIVATE_STATUS + "/{userId}")
     public ResponseEntity<Boolean> activateStatus(@PathVariable Long userId){
         return ResponseEntity.ok(userProfileService.activateStatus(userId));
+    }
+
+    @DeleteMapping(DELETE_BY_ID + "/{userId}")
+    public ResponseEntity<Boolean> delete(@PathVariable Long userId){
+        return ResponseEntity.ok(userProfileService.delete(userId));
     }
 
 
