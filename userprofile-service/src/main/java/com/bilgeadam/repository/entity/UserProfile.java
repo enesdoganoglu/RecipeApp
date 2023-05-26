@@ -31,10 +31,8 @@ public class UserProfile extends Base implements Serializable{
     private String email;
     private String password;
 
-    @Builder.Default //bir property' ye başlangıç değeri atandığında kullanılır, new'lendiğinde kullanılmaz
+    @Builder.Default
     private EStatus status = EStatus.PENDING;
 
-    //follow, follower
-    private List<String> follows = new ArrayList<>();  //followId
-    private List<String> followers = new ArrayList<>(); //userId
+
 }

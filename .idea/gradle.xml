@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/comment-service" />
             <option value="$PROJECT_DIR$/config-server" />
             <option value="$PROJECT_DIR$/recipe-service" />
+            <option value="$PROJECT_DIR$/user-service" />
             <option value="$PROJECT_DIR$/userprofile-service" />
           </set>
         </option>

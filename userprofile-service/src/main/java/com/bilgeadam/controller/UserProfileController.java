@@ -10,12 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.bilgeadam.constant.ApiUrls.*;
+import static com.bilgeadam.constant.ApiUrls.ACTIVATE_STATUS;
 
 @RestController
 @RequestMapping(USER_PROFILE)
 @RequiredArgsConstructor
 public class UserProfileController {
     private final UserProfileService userProfileService;
+
+
+    @GetMapping(ACTIVATE_STATUS + "/{userId}")
+    public ResponseEntity<Boolean> activateStatus(@PathVariable Long userId){
+        return ResponseEntity.ok(userProfileService.activateStatus(userId));
+    }
 
 
 }
