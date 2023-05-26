@@ -15,6 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @SuperBuilder
+@Table(name = "tbluser")
 public class User extends Base{
 
     @Id

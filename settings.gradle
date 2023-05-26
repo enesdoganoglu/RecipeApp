@@ -4,4 +4,5 @@ include 'userprofile-service'
 include 'recipe-service'
 include 'recipe-service'
 include 'comment-service'
+include 'config-server'
 
