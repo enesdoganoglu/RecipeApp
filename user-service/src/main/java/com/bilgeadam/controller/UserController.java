@@ -31,4 +31,9 @@ public class UserController {
     public ResponseEntity<Boolean> activateStatus(@RequestBody ActivateRequestDto dto){
         return ResponseEntity.ok(userService.activateStatus(dto));
     }
+
+    @PostMapping(LOGIN)
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto dto){
+        return ResponseEntity.ok(userService.login(dto));
+    }
 }

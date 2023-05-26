@@ -1,6 +1,7 @@
 package com.bilgeadam.service;
 
 import com.bilgeadam.dto.request.ActivateRequestDto;
+import com.bilgeadam.dto.request.LoginRequestDto;
 import com.bilgeadam.dto.request.RegisterRequestDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
 import com.bilgeadam.exception.ErrorType;
@@ -25,6 +26,7 @@ import static com.bilgeadam.utility.CodeGenerator.generateCode;
 public class UserService extends ServiceManager<User, Long> {
     private final IUserRepository userRepository;
 
+    private final JwtTokenProvider jwtTokenProvider;
     private final IUserProfileManager userManager;
     private final RegisterProducer registerProducer ;
     private final PasswordEncoder passwordEncoder;
@@ -33,10 +35,11 @@ public class UserService extends ServiceManager<User, Long> {
     public UserService(JpaRepository<User, Long> repository,
                        IUserRepository userRepository,
                        JwtTokenProvider jwtTokenProvider,
-                       IUserProfileManager userManager, RegisterProducer registerProducer,
+                       JwtTokenProvider jwtTokenProvider1, IUserProfileManager userManager, RegisterProducer registerProducer,
                        PasswordEncoder passwordEncoder) {
         super(repository);
         this.userRepository = userRepository;
+        this.jwtTokenProvider = jwtTokenProvider1;
         this.userManager = userManager;
         this.registerProducer = registerProducer;
         this.passwordEncoder = passwordEncoder;
@@ -68,6 +71,17 @@ public class UserService extends ServiceManager<User, Long> {
             return true;
         }
         throw new UserManagerException(ErrorType.ACTIVATE_CODE_ERROR);
+    }
+    public String login(LoginRequestDto dto){
+        Optional<User> user = userRepository.findOptionalByUsername(dto.getUsername());
+        if (user.isEmpty() || !passwordEncoder.matches(dto.getPassword(), user.get().getPassword())){
+            throw new UserManagerException(ErrorType.LOGIN_ERROR);
+        } else if (!user.get().getStatus().equals(EStatus.ACTIVE)) {
+            throw new UserManagerException(ErrorType.ACTIVATE_CODE_ERROR);
+        }
+        return jwtTokenProvider.createToken(user.get().getUserId(), user.get().getRole())
+                .orElseThrow(() -> {throw new UserManagerException(ErrorType.TOKEN_NOT_CREATED);
+                });
     }
 
 
