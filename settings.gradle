@@ -8,4 +8,6 @@ include 'config-server'
 include 'user-service'
 include 'mail-service'
 include 'elastic-service'
+include 'api-gateway-service'
+include 'api-gateway-service'
 
