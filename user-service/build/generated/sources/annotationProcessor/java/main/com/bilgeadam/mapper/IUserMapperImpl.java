@@ -1,8 +1,9 @@
 package com.bilgeadam.mapper;
 
 import com.bilgeadam.dto.request.RegisterRequestDto;
-import com.bilgeadam.dto.request.UpdateEmailOrUsernameRequestDto;
+import com.bilgeadam.dto.request.UpdateUserInformationRequestDto;
 import com.bilgeadam.dto.response.RegisterResponseDto;
+import com.bilgeadam.rabbitmq.model.RegisterMailModel;
 import com.bilgeadam.rabbitmq.model.RegisterModel;
 import com.bilgeadam.repository.entity.User;
 import javax.annotation.processing.Generated;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-26T20:39:32+0300",
+    date = "2023-05-29T15:25:47+0300",
     comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-7.4.jar, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
@@ -52,6 +53,21 @@ public class IUserMapperImpl implements IUserMapper {
     }
 
     @Override
+    public RegisterMailModel fromUserToRegisterMailModel(User user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        RegisterMailModel.RegisterMailModelBuilder registerMailModel = RegisterMailModel.builder();
+
+        registerMailModel.username( user.getUsername() );
+        registerMailModel.email( user.getEmail() );
+        registerMailModel.activationCode( user.getActivationCode() );
+
+        return registerMailModel.build();
+    }
+
+    @Override
     public RegisterResponseDto fromUserToResponseDto(User user) {
         if ( user == null ) {
             return null;
@@ -67,13 +83,19 @@ public class IUserMapperImpl implements IUserMapper {
     }
 
     @Override
-    public void updateUsernameOrEmail(UpdateEmailOrUsernameRequestDto dto, User user) {
+    public void updateUserInformation(UpdateUserInformationRequestDto dto, User user) {
         if ( dto == null ) {
             return;
         }
 
         if ( dto.getUserId() != null ) {
             user.setUserId( dto.getUserId() );
+        }
+        if ( dto.getName() != null ) {
+            user.setName( dto.getName() );
+        }
+        if ( dto.getSurname() != null ) {
+            user.setSurname( dto.getSurname() );
         }
         if ( dto.getUsername() != null ) {
             user.setUsername( dto.getUsername() );

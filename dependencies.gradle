@@ -41,6 +41,8 @@ ext {
             //REDIS
             springBootDataRedis: "org.springframework.boot:spring-boot-starter-data-redis:$versions.springBoot",
             //MailSender
-            springBootMailSender: "org.springframework.boot:spring-boot-starter-mail:$versions.springBoot"
+            springBootMailSender: "org.springframework.boot:spring-boot-starter-mail:$versions.springBoot",
+            //ElasticSearch
+            springBootElasticSearch: "org.springframework.boot:spring-boot-starter-data-elasticsearch:$versions.springBoot"
     ]
 }

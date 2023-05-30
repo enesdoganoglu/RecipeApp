@@ -29,6 +29,16 @@ public class UserController {
         return ResponseEntity.ok(userService.registerWithRabbitMq(dto));
     }
 
+    @PutMapping(PASSWORD_CHANGE)
+    public ResponseEntity<Boolean> passwordChange(@RequestBody FromUserProfilePasswordChangeDto dto){
+        return ResponseEntity.ok(userService.passwordChange(dto));
+    }
+
+    @PostMapping(FORGOT_PASSWORD)
+    public ResponseEntity<Boolean> forgotPassword(String email, String username){
+        return ResponseEntity.ok(userService.forgotPassword(email, username));
+    }
+
     @PostMapping(ACTIVATE_STATUS)
     public ResponseEntity<Boolean> activateStatus(@RequestBody ActivateRequestDto dto){
         return ResponseEntity.ok(userService.activateStatus(dto));
@@ -48,8 +58,27 @@ public class UserController {
         return ResponseEntity.ok(userService.delete(token));
     }
 
-    @PutMapping("/update-username-email")
-    public ResponseEntity<Boolean> update(@RequestBody UpdateEmailOrUsernameRequestDto dto){
+    @PutMapping("/update-user-information")
+    public ResponseEntity<Boolean> update(@RequestBody UpdateUserInformationRequestDto dto){
         return ResponseEntity.ok(userService.update(dto));
     }
+    @GetMapping("/create-token-with-id")
+    public ResponseEntity<String> createToken(Long id){
+        return ResponseEntity.ok(tokenProvider.createToken(id).get());
+    }
+
+
+    @GetMapping("/get-id-from-token")
+    public ResponseEntity<Long> getIdFromToken(String token){
+        return ResponseEntity.ok(tokenProvider.getIdFromToken(token).get());
+    }
+
+    @GetMapping("/find-by-role/{role}")
+    public ResponseEntity<List<Long>> findByRole(@PathVariable String role){
+        return ResponseEntity.ok(userService.findByRole(role));
+    }
+
+
+
+
 }

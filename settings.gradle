@@ -6,4 +6,6 @@ include 'recipe-service'
 include 'comment-service'
 include 'config-server'
 include 'user-service'
+include 'mail-service'
+include 'elastic-service'
 

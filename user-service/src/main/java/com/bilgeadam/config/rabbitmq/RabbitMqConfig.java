@@ -10,6 +10,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMqConfig {
+
+    //register consumer address queue
+    @Value("${rabbitmq.queueAddressRegister}")
+    String queueAddressNameRegister;
+    @Bean
+    Queue registerAddressQueue(){
+        return new Queue(queueAddressNameRegister);
+    }
     @Value("${rabbitmq.exchange-user}")
     String exchange;
 
@@ -30,7 +38,23 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public Binding bindingRegister(final Queue registerQueue, final DirectExchange exchangeAuth) {
-        return BindingBuilder.bind(registerQueue).to(exchangeAuth).with(registerBindingKey);
+    public Binding bindingRegister(final Queue registerQueue, final DirectExchange exchangeUser) {
+        return BindingBuilder.bind(registerQueue).to(exchangeUser).with(registerBindingKey);
+    }
+
+    //Mail işlemi için
+    @Value("${rabbitmq.registerMailQueue}")
+    private String registerMailQueue;
+    @Value("${rabbitmq.registerMailBindingKey}")
+    private String registerMailBindingKey;
+
+    @Bean
+    Queue registerMailQueue(){
+        return new Queue(registerMailQueue);
+    }
+
+    @Bean
+    public Binding bindingRegisterMail(final Queue registerMailQueue, final DirectExchange exchangeUser){
+        return BindingBuilder.bind(registerMailQueue).to(exchangeUser).with(registerMailBindingKey);
     }
 }

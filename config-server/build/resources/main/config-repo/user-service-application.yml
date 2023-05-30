@@ -34,3 +34,6 @@ rabbitmq:
   exchange-user: user-exchange
   registerKey: register-key
   queueRegister: register-queue
+  queueAddressRegister: address-register-queue
+  registerMailQueue: mail-queue
+  registerMailBindingKey: mail-key

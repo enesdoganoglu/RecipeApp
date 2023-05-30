@@ -30,7 +30,15 @@ public class UserProfile extends Base implements Serializable{
     private String username;
     private String email;
     private String password;
-
+    private String avatar;
+    private String avenue;
+    private String neighbourhood;
+    private String district;
+    private String province;
+    private String country;
+    private String apartmentNo;
+    private String houseNo;
+    private String zipCode;
     @Builder.Default
     private EStatus status = EStatus.PENDING;
 
