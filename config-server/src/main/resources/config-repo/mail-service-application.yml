@@ -19,7 +19,7 @@ spring:
     #yani kayıt olurken girilen mail' e aktivasyon kodu gönderecek ana mail burada yazılır
     username: enesjava1@gmail.com
     #google account manager altında 'uygulama şifreleri' üzerinden üretilen şifredir
-    password: lcwyrpkhinexrysv
+    password: ${recipeEmailSıfre}
     host: smtp.gmail.com
     port: 587
     properties:
